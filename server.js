@@ -1,42 +1,67 @@
-// var express = require("express")//importing the express framwork as we are going to use this one
-// var app = express()
+let express = require('express');//importing the express framwork as we are going to use this one
+let app = express();
 
-// app.use(express.static(__dirname+'/public'))//pointing to directories
-// app.use(express.json());
+//Imported mongodb
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
-// app.use(express.urlencoded({ extended: false }));//only parse incoming Request Object if strings or arrays
-// var port = process.env.port || 3000;//// use port 3000 unless there exists a preconfigured port
+//path of the database where we store our data
+const uri = "mongodb+srv://admin786:admin786@cluster0.diwr1y6.mongodb.net/?retryWrites=true&w=majority";
+let port = process.env.port || 3000;
+let collection;
 
-// //callback function for listening the app on port:3000
-// app.listen(port,()=>{
-
-//     console.log("App listening to: "+port)
-
-// })
-
-express = require("express")
-var app = express()
-app.use(express.static(__dirname+'/public'))
+app.use(express.static(__dirname + '/public'));//pointing to directories
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-const cardList = [
-{
-title: "Kitten 2",
-image: "images/kitten-2.jpg",
-link: "About Kitten 2",
-desciption: "Demo desciption about kitten 2"
-},
-{
-title: "Kitten 3",
-image: "images/kitten-3.jpg",
-link: "About Kitten 3",
-desciption: "Demo desciption about kitten 3"
+app.use(express.urlencoded({extended: false}));//only parse incoming Request Object if strings or arrays
+
+const client = new MongoClient(uri, {
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
+});
+
+//asynchronious (promise) function 
+async function runDBConnection() {
+    try {
+        await client.connect();
+        collection = client.db().collection('Cat');//this  method to get a MongoDB collection. If it doesn't already exist, it is automatically created:
+        console.log(collection);
+    } catch(ex) {
+        console.error(ex);
+    }
 }
-]
-app.get('/api/projects',(req,res) => {
-res.json({statusCode: 200, data: cardList, message:"Success"})
-})
-var port = process.env.port || 3000;
-app.listen(port,()=>{
-console.log("App listening to: "+port)
-})
+
+app.get('/', function (req,res) {
+    res.render('index.html');
+});
+
+app.get('/api/cats', (req,res) => {
+    getAllCats((err,result)=>{
+        if (!err) {
+            res.json({statusCode:200, data:result, message:'get all cats successful'});
+        }
+    });
+});
+
+app.post('/api/cat', (req,res)=>{
+    let cat = req.body;
+    postCat(cat, (err, result) => {
+        if (!err) {
+            res.json({statusCode:201, data:result, message:'success'});
+        }
+    });
+});
+
+function postCat(cat,callback) {
+    collection.insertOne(cat,callback);
+}
+
+function getAllCats(callback){
+    collection.find({}).toArray(callback);
+}
+
+app.listen(port, ()=>{
+    console.log('Server started on PORT', port);
+    runDBConnection();
+});
