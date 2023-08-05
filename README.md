@@ -27,6 +27,7 @@ For completing this task, I have used the following tools and Framework:<br>
 
 5. Go to `localhost:3000` on your browser. <br>
 # Note: First you will need to create account on mongodb [https://www.mongodb.com/]
+If you are new to mongodb please follow this link (https://www.mongodb.com/basics/get-started)
 ![Overall Interface](https://github.com/Mudasirrr/SIT725-2023-T2-Prac3/blob/main/ooutput.PNG)
 ![Overall Interface](https://github.com/Mudasirrr/SIT725-2023-T2-Prac3/blob/main/ooutput.PNG)
 # Screenshots
