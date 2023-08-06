@@ -4,12 +4,12 @@
 
 For completing this task, I have used the following tools and Framework:<br>
    # 1. Node. js<br>
-   # 2. Mongodb <br>
+   # 2. Mongodb library<br>
    # 3. Express.js <br>
    # 4. Git<br>
    # 5. GitHub Repository<br>
    # 6. Vs Code<br>
-   # 7. Mongodb website https://www.mongodb.com/
+   # 7. Mongodb website for creating a database project https://www.mongodb.com/
 <br>
    
 # How it will work?
